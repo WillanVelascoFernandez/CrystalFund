@@ -18,6 +18,7 @@ contract CrystalFund is Ownable {
     uint256 public projectCount = 0;
     uint256 public contractFeePercentage = 5; // 5% fee
     uint256 public maxGoal = 1000 ether; // Goal máximo inicial
+    uint256 public maxTime = 365 days; // Time máximo por recaudación
 
     event ProjectCreated(uint256 projectId, address creator, string causa, uint256 goal, uint256 deadline);
     event Contributed(uint256 projectId, address contributor, uint256 amount);
@@ -26,7 +27,7 @@ contract CrystalFund is Ownable {
 
     function createProject(string memory _causa, uint256 _goal, uint256 _duration) public {
 		require(_goal > 0 && _goal <= maxGoal, "Goal must be greater than 0 and less than or equal to max goal");
-		require(_duration > 0 && _duration <= 365, "Duration must be between 1 and 365 days");
+		require(_duration > 0 && _duration <= maxTime, "Duration must be between 1 and 365 days");
 
         uint256 projectId = ++projectCount;
 
@@ -82,6 +83,11 @@ contract CrystalFund is Ownable {
         maxGoal = _newMaxGoal;
     }
 
+    function setMaxTime(uint256 _newMaxTime) public onlyOwner {
+        require(_newMaxTime > 0, "Max time must be greater than 0");
+        maxTime = _newMaxTime;
+    }
+
 	function getTimeRemaining(uint256 _projectId) public view returns (uint256 daysRemaining, uint256 hoursRemaining, uint256 minutesRemaining, uint256 secondsRemaining) {
     Project storage project = projects[_projectId];
 
@@ -98,5 +104,17 @@ contract CrystalFund is Ownable {
     secondsRemaining = (timeRemaining % 1 minutes) / 1 seconds;
 
     return (daysRemaining, hoursRemaining, minutesRemaining, secondsRemaining);
-}
+    }
+
+    function getAllProjects() public view returns (uint256[] memory, Project[] memory) {
+        uint256[] memory ids = new uint256[](projectCount);
+        Project[] memory projectDetails = new Project[](projectCount);
+
+        for (uint256 i = 1; i <= projectCount; i++) {
+            ids[i - 1] = i;
+            projectDetails[i - 1] = projects[i];
+        }
+
+        return (ids, projectDetails);
+    }
 }
