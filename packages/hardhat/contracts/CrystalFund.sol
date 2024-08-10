@@ -18,7 +18,7 @@ contract CrystalFund is Ownable {
     uint256 public projectCount = 0;
     uint256 public contractFeePercentage = 5; // 5% fee
     uint256 public maxGoal = 1000 ether; // Goal máximo inicial
-    uint256 public maxTime = 365 days; // Time máximo por recaudación
+    uint256 public maxTime = 365; // Time máximo por recaudación
 
     event ProjectCreated(uint256 projectId, address creator, string causa, uint256 goal, uint256 deadline);
     event Contributed(uint256 projectId, address contributor, uint256 amount);
@@ -106,7 +106,7 @@ contract CrystalFund is Ownable {
     return (daysRemaining, hoursRemaining, minutesRemaining, secondsRemaining);
     }
 
-    function getAllProjects() public view returns (uint256[] memory, Project[] memory) {
+    function getAllProjects() private view returns (uint256[] memory, Project[] memory) {
         uint256[] memory ids = new uint256[](projectCount);
         Project[] memory projectDetails = new Project[](projectCount);
 
