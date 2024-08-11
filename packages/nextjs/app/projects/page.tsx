@@ -49,7 +49,7 @@ const Home: NextPage = () => {
             className="btn btn-secondary mt-2"
             onClick={() => createProjectNew()}
           >
-            Donate
+            Crear
           </button>
           </div>
           </div>

@@ -51,7 +51,7 @@ const Home: NextPage = () => {
               }
             }}
           >
-            Buy Tokens
+            Donar
           </button>
 
           </div>
