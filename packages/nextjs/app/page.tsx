@@ -3,54 +3,57 @@
 import type { NextPage } from "next";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useState } from "react";
-import { EtherInput, InputBase, IntegerInput } from "~~/components/scaffold-eth";
-
+import { IntegerInput } from "~~/components/scaffold-eth";
+import { getTokenPrice, multiplyTo1e18 } from "~~/utils/scaffold-eth/priceInWei";
 
 const Home: NextPage = () => {
-  const [causa, setCausa] = useState("");
-  const [goal, setGoal] = useState(BigInt(0));
-  const [duration, setDuration] = useState(BigInt(0));
+  const [ donacion, setDonacion] = useState<string | bigint>("");
+  const [ id, setId] = useState(BigInt(0));
+  const { writeContractAsync: contratoWrite } = useScaffoldWriteContract("CrystalFund");
 
-  const { writeContractAsync: createProject } = useScaffoldWriteContract("CrystalFund");
-
-  const createProjectNew =  async () => {
-    try {
-      await createProject({
-        functionName: "createProject",
-        args: [causa, goal, duration],
-      });
-    } catch (e) {
-      console.error("Error setting greeting:", e);
-    }
-  }
   return (
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
         <div className="card bg-base-100 w-96 shadow-xl">
           <div className="card-body">
-            <h2 className="card-title">Crear Proyecto</h2>
-            <div className="text-xl">Causa</div>
-            <InputBase name="causa" placeholder="causa" value={causa} onChange={nombre => setCausa(nombre)} />
-            
-            <div className="text-xl">Meta</div>
+            <h2 className="card-title">Contribuir</h2>
+            <div className="text-xl">Id Project</div>
 
-            <EtherInput value={goal!.toString()} onChange={amount => amount == "" ? "" : setGoal(BigInt(amount))} />
-
-            <div className="text-xl">Dias de duración</div>
+            <div className="w-full flex flex-col space-y-2">
             <IntegerInput
-            value={duration.toString()}
-            onChange={updateDuration => {
-              setDuration(BigInt(updateDuration));
-            }}
-            placeholder="value (wei)"
+              placeholder="amount of tokens to buy"
+              value={id!.toString()}
+              onChange={value => setId(BigInt(value))}
+              disableMultiplyBy1e18
+              />
+            </div>
+            <div className="text-xl">Donacion</div>
+
+            <div className="w-full flex flex-col space-y-2">
+            <IntegerInput
+              placeholder="amount of tokens to buy"
+              value={donacion.toString()}
+              onChange={value => setDonacion(value)}
+              disableMultiplyBy1e18
             />
-            
-            <button
+          </div>
+
+          <button
             className="btn btn-secondary mt-2"
-            onClick={() => createProjectNew()}
+            onClick={async () => {
+              try {
+                await contratoWrite({
+                  functionName: "contribute", value: getTokenPrice(donacion),
+                  args: [ id ]
+                });
+              } catch (err) {
+                console.error("Error calling buyTokens function");
+              }
+            }}
           >
-            Donate
+            Buy Tokens
           </button>
+
           </div>
           </div>
       </div>

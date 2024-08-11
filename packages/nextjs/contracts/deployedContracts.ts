@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     CrystalFund: {
-      address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      address: "0x59b670e9fA9D0A427751Af201D676719a970857b",
       abi: [
         {
           anonymous: false,
