@@ -1,14 +1,14 @@
 "use client";
 
-import type { NextPage } from "next";
-import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useState } from "react";
+import type { NextPage } from "next";
 import { IntegerInput } from "~~/components/scaffold-eth";
+import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { getTokenPrice } from "~~/utils/scaffold-eth/priceInWei";
 
 const Home: NextPage = () => {
-  const [ donacion, setDonacion] = useState<string | bigint>("");
-  const [ id, setId] = useState(BigInt(0));
+  const [donacion, setDonacion] = useState<string | bigint>("");
+  const [id, setId] = useState(BigInt(0));
   const { writeContractAsync: contratoWrite } = useScaffoldWriteContract("CrystalFund");
 
   return (
@@ -20,42 +20,41 @@ const Home: NextPage = () => {
             <div className="text-xl">Id Project</div>
 
             <div className="w-full flex flex-col space-y-2">
-            <IntegerInput
-              placeholder="amount of tokens to buy"
-              value={id!.toString()}
-              onChange={value => setId(BigInt(value))}
-              disableMultiplyBy1e18
+              <IntegerInput
+                placeholder="amount of tokens to buy"
+                value={id!.toString()}
+                onChange={value => setId(BigInt(value))}
+                disableMultiplyBy1e18
               />
             </div>
             <div className="text-xl">Donacion</div>
 
             <div className="w-full flex flex-col space-y-2">
-            <IntegerInput
-              placeholder="amount of tokens to buy"
-              value={donacion.toString()}
-              onChange={value => setDonacion(value)}
-              disableMultiplyBy1e18
-            />
-          </div>
+              <IntegerInput
+                placeholder="amount of tokens to buy"
+                value={donacion.toString()}
+                onChange={value => setDonacion(value)}
+              />
+            </div>
 
-          <button
-            className="btn btn-secondary mt-2"
-            onClick={async () => {
-              try {
-                await contratoWrite({
-                  functionName: "contribute", value: getTokenPrice(donacion),
-                  args: [ id ]
-                });
-              } catch (err) {
-                console.error("Error calling buyTokens function");
-              }
-            }}
-          >
-            Donar
-          </button>
-
+            <button
+              className="btn btn-secondary mt-2"
+              onClick={async () => {
+                try {
+                  await contratoWrite({
+                    functionName: "contribute",
+                    value: getTokenPrice(donacion),
+                    args: [id],
+                  });
+                } catch (err) {
+                  console.error("Error calling buyTokens function");
+                }
+              }}
+            >
+              Donar
+            </button>
           </div>
-          </div>
+        </div>
       </div>
     </>
   );

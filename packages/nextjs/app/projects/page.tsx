@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { NextPage } from "next";
-import { EtherInput, InputBase, IntegerInput } from "~~/components/scaffold-eth";
+import { InputBase, IntegerInput } from "~~/components/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
@@ -32,41 +32,19 @@ const Home: NextPage = () => {
           <div className="card-body">
             <h2 className="card-title">Crear Proyecto</h2>
             <div className="text-xl">Causa</div>
-            <InputBase name="causa" placeholder="causa" value={causa} onChange={nombre => setCausa(nombre)} />
+            <InputBase name="causa" placeholder="Causa" value={causa} onChange={causa => setCausa(causa)} />
 
             <div className="text-xl">Meta</div>
 
-            <EtherInput
-              value={goal.toString()}
-              onChange={amount => {
-                debugger;
-                // Verificar si la cadena es vacía
-                if (amount === "") {
-                  setGoal(BigInt(0)); // O el valor que consideres adecuado para una entrada vacía
-                  return;
-                }
-
-                // Intentar convertir la cadena a un número
-                const numberAmount = Number(amount);
-
-                // Verificar si la conversión a número es válida
-                if (isNaN(numberAmount)) {
-                  console.error("Invalid number:", amount);
-                  // Puedes optar por no actualizar el estado o manejar el error de otra manera
-                  return;
-                }
-
-                // Convertir el número a bigint y actualizar el estado
-                setGoal(BigInt(Math.round(parseFloat(amount))));
-              }}
-            />
+            <IntegerInput value={goal.toString()} onChange={amount => setGoal(BigInt(amount))} />
             <div className="text-xl">Dias de duración</div>
             <IntegerInput
               value={duration.toString()}
               onChange={updateDuration => {
                 setDuration(BigInt(updateDuration));
               }}
-              placeholder="value (wei)"
+              placeholder="Tiempo (dias)"
+              disableMultiplyBy1e18
             />
 
             <button className="btn btn-secondary mt-2" onClick={() => createProjectNew()}>
@@ -84,7 +62,7 @@ const Home: NextPage = () => {
 
             <div className="w-full flex flex-col space-y-2">
               <IntegerInput
-                placeholder="amount of tokens to buy"
+                placeholder="ID"
                 value={id!.toString()}
                 onChange={value => setId(BigInt(value))}
                 disableMultiplyBy1e18
@@ -104,7 +82,7 @@ const Home: NextPage = () => {
                 }
               }}
             >
-              Donar
+              Retirar
             </button>
           </div>
         </div>

@@ -103,7 +103,7 @@ const config: HardhatUserConfig = {
       accounts: [deployerPrivateKey],
     },
     scrollSepolia: {
-      url: "https://sepolia-rpc.scroll.io",
+      url: "https://scroll-testnet-public.unifra.io",
       accounts: [deployerPrivateKey],
     },
     scroll: {

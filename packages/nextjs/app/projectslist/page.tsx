@@ -1,5 +1,6 @@
 "use client";
 
+import humanizeDuration from "humanize-duration";
 import type { NextPage } from "next";
 import { formatEther } from "viem";
 import { Address } from "~~/components/scaffold-eth";
@@ -12,6 +13,17 @@ const ProjectEvents: NextPage = () => {
     eventName: "ProjectCreated",
     fromBlock: 0n,
   });
+  function formatTimeRemaining(deadline: bigint) {
+    const now = Date.now(); // Tiempo actual en milisegundos
+    const timeRemaining = Number(deadline) * 1000 - now; // Tiempo faltante en milisegundos
+
+    // Si el tiempo restante es negativo, significa que el deadline ya pasó
+    if (timeRemaining <= 0) {
+      return "Expired";
+    }
+
+    return humanizeDuration(timeRemaining, { largest: 2, round: true });
+  }
 
   return (
     <div className="flex items-center flex-col flex-grow pt-10">
@@ -52,7 +64,7 @@ const ProjectEvents: NextPage = () => {
                         </td>
                         <td>{event.args.causa}</td>
                         <td>{formatEther(event.args?.goal || 0n)}</td>
-                        <td>{event?.args?.deadline?.toString()}</td>
+                        <td>{event?.args?.deadline ? formatTimeRemaining(event.args.deadline) : "No deadline"}</td>
                       </tr>
                     );
                   })
