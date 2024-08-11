@@ -35,7 +35,6 @@
     "verify": "yarn workspace @se-2/hardhat verify"
   },
   "devDependencies": {
-    "@types/humanize-duration": "^3",
     "husky": "~8.0.3",
     "lint-staged": "~13.2.2"
   },
@@ -46,6 +45,6 @@
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
     "ethers": "^6.13.2",
-    "humanize-duration": "^3.32.1"
+    "humanize-duration-ts": "^2.1.1"
   }
 }

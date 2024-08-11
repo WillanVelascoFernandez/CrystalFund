@@ -1,12 +1,14 @@
 "use client";
 
-import humanizeDuration from "humanize-duration";
+import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import type { NextPage } from "next";
 import { formatEther } from "viem";
 import { Address } from "~~/components/scaffold-eth";
 import { useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
 
 const ProjectEvents: NextPage = () => {
+  const languageUtil = new HumanizeDurationLanguage();
+  const humanizer = new HumanizeDuration(languageUtil);
   // ProjectCreated Events
   const { data: projectCreatedEvents, isLoading: isProjectEventsLoading } = useScaffoldEventHistory({
     contractName: "CrystalFund", // Cambia "YourContract" por el nombre real de tu contrato
@@ -22,7 +24,7 @@ const ProjectEvents: NextPage = () => {
       return "Expired";
     }
 
-    return humanizeDuration(timeRemaining, { largest: 2, round: true });
+    return humanizer.humanize(timeRemaining, { largest: 2, round: true });
   }
 
   return (
