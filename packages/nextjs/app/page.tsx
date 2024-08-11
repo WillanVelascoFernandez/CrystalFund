@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { useState } from "react";
 import { IntegerInput } from "~~/components/scaffold-eth";
-import { getTokenPrice, multiplyTo1e18 } from "~~/utils/scaffold-eth/priceInWei";
+import { getTokenPrice } from "~~/utils/scaffold-eth/priceInWei";
 
 const Home: NextPage = () => {
   const [ donacion, setDonacion] = useState<string | bigint>("");
