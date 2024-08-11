@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { NextPage } from "next";
 import { EtherInput, InputBase, IntegerInput } from "~~/components/scaffold-eth";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
-import { getTokenPrice } from "~~/utils/scaffold-eth/priceInWei";
 
 const Home: NextPage = () => {
   // Contribuir
